@@ -1,0 +1,18 @@
+{
+  "name": "@portal/models",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./common/fields": "./src/common/fields.ts",
+    "./common/api.schema": "./src/common/api.schema.ts",
+    "./common/api.types": "./src/common/api.types.ts",
+    "./common/parse": "./src/common/parse.ts",
+    "./auth": "./src/auth/index.ts",
+    "./user": "./src/user/index.ts"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  }
+}

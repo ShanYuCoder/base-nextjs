@@ -1,0 +1,47 @@
+# Next.js
+.next/
+out/
+
+# Node
+node_modules
+.pnpm-store
+
+# Accidental CLI output
+--host/
+--port/
+
+# Logs & test artifacts
+logs
+*.log
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/
+coverage/
+
+# Storybook (legacy Vue — remove if folder returns)
+storybook-static
+stories/auto/
+
+# Misc
+.DS_Store
+.fleet
+.idea
+.cache
+dist
+
+#pnpm
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Env
+.env
+.env.*
+!.env.example
+!docker/.env.example
+docker/.env
+
+# CodeGraph is outside the toolkit-managed ignore contract.
+.codegraph/
+.codegraph-*/
+

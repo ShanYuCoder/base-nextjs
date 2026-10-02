@@ -1,0 +1,52 @@
+# Một container = một portal. Gateway → <PORTAL_STACK_PREFIX>-portal-node:3000 trên base_shared_net (không publish ra host).
+# pnpm dev chỉ chạy trong container; trên host: install, test, …
+#
+#   docker compose --env-file .env -f docker-compose.yml up -d
+#
+# Mount source portal (code + lockfile). node_modules → volume riêng (không trùng host).
+# Container khởi động root một nhịp: chown volume → setpriv HOST_UID (trùng host; .next trên bind mount không root).
+
+name: portal-${PORTAL_STACK_PREFIX:-base}
+
+services:
+  frontend-node:
+    container_name: ${PORTAL_STACK_PREFIX:-base}-portal-node
+    image: node:24
+    user: "0:0"
+    working_dir: /workspace
+    command:
+      - /bin/sh
+      - /workspace/portal/docker/entrypoint-dev.sh
+      - sh
+      - -c
+      - mkdir -p /tmp/corepack /tmp/cache /tmp/config && cd /workspace/portal && if [ ! -x node_modules/.bin/next ]; then corepack pnpm install; fi && corepack pnpm run dev
+    environment:
+      HOST_UID: "${HOST_UID:-1000}"
+      HOST_GID: "${HOST_GID:-1000}"
+      CHOKIDAR_USEPOLLING: "${CHOKIDAR_USEPOLLING:-0}"
+      CHOKIDAR_INTERVAL: "${CHOKIDAR_INTERVAL:-300}"
+      WATCHPACK_POLLING: "${WATCHPACK_POLLING:-0}"
+      PORT: "3000"
+      HOME: /tmp
+      COREPACK_HOME: /tmp/corepack
+      XDG_CACHE_HOME: /tmp/cache
+      XDG_CONFIG_HOME: /tmp/config
+    volumes:
+      - ..:/workspace/portal
+      - portal_node_modules:/workspace/portal/node_modules
+      # Che .pnpm-store trên host (~60k files) — container dùng store riêng trong volume
+      - portal_pnpm_store:/workspace/portal/.pnpm-store
+    networks:
+      - default
+      - shared
+
+networks:
+  shared:
+    name: ${BASE_SHARED_NETWORK_NAME:-base_shared_net}
+    external: true
+
+volumes:
+  portal_node_modules:
+    name: portal_${PORTAL_STACK_PREFIX:-base}_nodemodules
+  portal_pnpm_store:
+    name: portal_${PORTAL_STACK_PREFIX:-base}_pnpmstore

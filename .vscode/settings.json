@@ -1,0 +1,34 @@
+{
+  "git.ignoreLimitWarning": true,
+
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.pnpm-store/**": true,
+    "**/.next/**": true,
+    "**/.git/objects/**": true,
+    "**/coverage/**": true,
+    "**/playwright-report/**": true,
+    "**/test-results/**": true,
+    "**/storybook-static/**": true,
+    "**/--host/**": true
+  },
+
+  "files.exclude": {
+    "**/.pnpm-store": true,
+    "**/--host": true
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.pnpm-store": true,
+    "**/.next": true,
+    "**/coverage": true,
+    "**/playwright-report": true,
+    "**/test-results": true,
+    "**/storybook-static": true,
+    "**/--host": true
+  },
+  "js/ts.tsserver.maxMemory": 4096,
+  "cursor.general.enableShadowWorkspace": false,
+    "json.schemaDownload.enable": true
+}
